@@ -7,3 +7,6 @@ high level architecture:
 codeguard backend open discussions:
 1. Kafka will be used between CLI requests to codeguard backend.
 2. MongoDB will be used as cache between codeguard backend to the open source DB.
+
+Open issues:
+1. Find a public API for dependencies vulnerabilities check.
