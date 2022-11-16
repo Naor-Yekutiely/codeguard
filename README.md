@@ -18,4 +18,4 @@ Codeguard backend open discussions:
 
 Open issues:
 
-1. Find a public API for dependencies vulnerabilities check.
+1. Find a public API for dependencies vulnerabilities check -> Found: https://nvd.nist.gov/developers/ Use https://pypi.org/project/nvdlib/

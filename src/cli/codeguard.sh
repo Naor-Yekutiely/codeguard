@@ -5,9 +5,10 @@ then
     if [ -a requirements.txt ]
     then
         while read line
-        do echo $line
+        do
+            # Pass the dependency to the server for vulnerability scan
+            echo $line
         done < requirements.txt
-        echo "---- Scan completed succssfully ----"
     else
         echo "There is no requirements.txt file found."
     fi
