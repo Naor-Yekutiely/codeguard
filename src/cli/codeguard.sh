@@ -4,11 +4,21 @@ if [ -d .git ]
 then
     if [ -a requirements.txt ]
     then
-        while read line
+        # Pass the dependency to the server for vulnerability scan
+        requirements=""
+        NL=$'\n'
+        while read line || [ -n "$line" ]
         do
-            # Pass the dependency to the server for vulnerability scan
-            echo $line
+            #TODO: The new line is not yes working.. we need it as a dilimiter between differen dependencies. 
+            requirements+=$(printf %b "$line\n")
         done < requirements.txt
+        if [ -z "$requirements" ]
+        then
+            echo "The equirements.txt file is empty"
+        else
+            # TODO: Pass the requirements to backend for proccessing and echo the results here.
+            echo $requirements
+        fi
     else
         echo "There is no requirements.txt file found."
     fi
