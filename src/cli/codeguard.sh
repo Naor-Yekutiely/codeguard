@@ -2,10 +2,11 @@
 
 if [ -d .git ]
 then
+    b=$(pip3 freeze > requirements.txt)
     if [ -a requirements.txt ]
     then
         # Pass the dependency to the server for vulnerability scan
-        requirements=""
+        requirements=""; #$(cat requirements.txt)
         NL=$'\n'
         while read line || [ -n "$line" ]
         do
