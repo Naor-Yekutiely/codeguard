@@ -14,7 +14,7 @@ then
         done < requirements.txt
         if [ -z "$requirements" ]
         then
-            echo "The equirements.txt file is empty"
+            echo "The requirements.txt file is empty"
         else
             # TODO: Pass the requirements to backend for proccessing and echo the results here.
             echo $requirements
