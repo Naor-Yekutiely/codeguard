@@ -2,26 +2,23 @@
 
 if [ -d .git ]
 then
-    b=$(pip3 freeze > requirements.txt)
-    if [ -a requirements.txt ]
+    pipreqs --force
+    # Pass the dependency to the server for vulnerability scan
+    requirements_arr=();
+    NL=$'\n'
+    while read line || [ -n "$line" ]
+    do
+        # TODO: This is not a arr....
+        requirements_arr+=($line)
+    done < requirements.txt
+
+    if [ -z "$requirements_arr" ]
     then
-        # Pass the dependency to the server for vulnerability scan
-        requirements=""; #$(cat requirements.txt)
-        NL=$'\n'
-        while read line || [ -n "$line" ]
-        do
-            #TODO: The new line is not yes working.. we need it as a dilimiter between differen dependencies. 
-            requirements+=$(printf %b "$line\n")
-        done < requirements.txt
-        if [ -z "$requirements" ]
-        then
-            echo "The equirements.txt file is empty"
-        else
-            # TODO: Pass the requirements to backend for proccessing and echo the results here.
-            echo $requirements
-        fi
+        echo "The equirements.txt file is empty - no dependencies"
     else
-        echo "There is no requirements.txt file found."
+        # Pass the requirements to backend for proccessing and echo the results here.
+        jq -n --arg requirements_arr "${requirements_arr[*]}" '{"dependencies": ($requirements_arr / " ") }' > dependencies.json
+        curl -X POST http://localhost:5000/login -H 'Content-Type: application/json' -d @dependencies.json
     fi
 else
     echo "This is not a git repo :("
