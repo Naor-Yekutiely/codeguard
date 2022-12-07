@@ -8,7 +8,7 @@ echoCodeguardResponse () {
 
 if [ -d .git ]
 then
-    pipreqs --force
+    pipreqs --force >nul 2>nul
     # Pass the dependency to the server for vulnerability scan
     requirements_arr=();
     while read line || [ -n "$line" ]

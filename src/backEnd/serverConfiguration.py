@@ -1,0 +1,2 @@
+fetchVulnerabilitiesFromNist = True
+logDependenciesTimes = True
