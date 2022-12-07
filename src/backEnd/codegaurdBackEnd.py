@@ -1,8 +1,21 @@
 from flask import Flask
 import requests
+import signal
+from leader_election_algo import LeaderElection
+from multiprocessing import Process
+import time
+
+def handler(signum, frame):
+    le.zk.stop()
+    le.zk.close()
+    exit(1)
 
 
 app = Flask(__name__)
+app.secret_key = "super secret key"
+le = LeaderElection('localhost:2181', 'AppChat', '/election')
+le.register()
+signal.signal(signal.SIGINT, handler)
 
 
 @app.route('/login', methods=['GET'])
