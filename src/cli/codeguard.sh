@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
+echoCodeguardResponse () {
+    echo "-------------------------------------------- codeguard --------------------------------------------"
+    echo $1
+    echo "-------------------------------------------- codeguard --------------------------------------------"
+}
+
 if [ -d .git ]
 then
     pipreqs --force
     # Pass the dependency to the server for vulnerability scan
     requirements_arr=();
-    NL=$'\n'
     while read line || [ -n "$line" ]
     do
         # TODO: This is not a arr....
@@ -18,8 +23,14 @@ then
     else
         # Pass the requirements to backend for proccessing and echo the results here.
         jq -n --arg requirements_arr "${requirements_arr[*]}" '{"dependencies": ($requirements_arr / " ") }' > dependencies.json
-        curl -X POST http://localhost:5000/login -H 'Content-Type: application/json' -d @dependencies.json
+        response=$(curl -X POST http://localhost:5000/scan -H 'Content-Type: application/json' -d @dependencies.json | jq .)
+        # TODO: check if the response is validd 200 and if not emptey. emptey means no varnubilities were found
+        if [ $response == "{}" ]; then
+            echoCodeguardResponse "No vulnerabilities found."
+        else
+            echoCodeguardResponse $response
+        fi
     fi
 else
-    echo "This is not a git repo :("
+    echoCodegourdResponse "This is not a git repository. Please run codeguard within a scope of a git repository"
 fi
