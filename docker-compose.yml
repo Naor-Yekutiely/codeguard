@@ -3,16 +3,13 @@ version: '3.7'
 services:
   mongo:
     image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: codegard
+    volumes:
+      - ./mongo-data:/data/db
+      # - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js ### -- !!!for initial data!!!!
     ports:
       - "27017:27017"
-    container_name: mongo
-    env_file: .env
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
-    volumes:
-      - mongo-data:/data/db
 
-volumes:
-  mongo-data:
+# volumes:
+#   - ./mongo-data:/ 
