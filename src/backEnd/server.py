@@ -2,7 +2,7 @@ from flask import Flask
 from flask import request, Response
 import json
 from dependencyExecutor import DependencyExecutor
-from leader_election_algo import LeaderElection
+from leaderElection import LeaderElection
 import signal
 
 
