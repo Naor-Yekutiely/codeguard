@@ -19,7 +19,7 @@ then
 
     if [ -z "$requirements_arr" ]
     then
-        echo "The equirements.txt file is empty - no dependencies"
+        echo "The requirements.txt file is empty - no dependencies"
     else
         # Pass the requirements to backend for proccessing and echo the results here.
         jq -n --arg requirements_arr "${requirements_arr[*]}" '{"dependencies": ($requirements_arr / " ") }' > dependencies.json
