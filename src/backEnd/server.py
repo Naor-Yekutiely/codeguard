@@ -2,24 +2,13 @@ from flask import Flask
 from flask import request, Response
 import json
 from dependencyExecutor import DependencyExecutor
-from leaderElection import LeaderElection
-import signal
-
-
-def handler(signum, frame):
-    le.zk.stop()
-    le.zk.close()
-    exit(1)
+from zooKeeperRegister import ZooKeeperRegisterClient
 
 
 app = Flask(__name__)
 dependencyExecutor = DependencyExecutor()
+zooKeeperClient = ZooKeeperRegisterClient(app)
 fetchFromSource = dependencyExecutor.fetchFromSource
-
-app.secret_key = "super secret key"
-le = LeaderElection('localhost:2181', 'codeguard', '/election')
-le.register()
-signal.signal(signal.SIGINT, handler)
 
 
 @app.route('/scan', methods=['POST'])
