@@ -1,8 +1,23 @@
 #!/usr/bin/env bash
 
+echoCodeguardResponse () {
+    echo "-------------------------------------------- codeguard --------------------------------------------"
+    echo $1
+    echo "-------------------------------------------- codeguard --------------------------------------------"
+}
+
 if [ -d .git ]
 then
-    if [ -a requirements.txt ]
+    pipreqs --force >nul 2>nul
+    # Pass the dependency to the server for vulnerability scan
+    requirements_arr=();
+    while read line || [ -n "$line" ]
+    do
+        # TODO: This is not a arr....
+        requirements_arr+=($line)
+    done < requirements.txt
+
+    if [ -z "$requirements_arr" ]
     then
         # Pass the dependency to the server for vulnerability scan
         requirements=""
@@ -16,12 +31,9 @@ then
         then
             echo "The requirements.txt file is empty"
         else
-            # TODO: Pass the requirements to backend for proccessing and echo the results here.
-            echo $requirements
+            echoCodeguardResponse $response
         fi
-    else
-        echo "There is no requirements.txt file found."
     fi
 else
-    echo "This is not a git repo :("
+    echoCodegourdResponse "This is not a git repository. Please run codeguard within a scope of a git repository"
 fi

@@ -1,0 +1,4 @@
+1. Connect to mongoDB container with the command: docker exec -ti <containerID> sh
+2. list all data bases with the command: show dbs
+3. use the codegard database with the command: use codegard
+4. For listing all data form the database collection (The collection name is "codegard_cache") use the command: db.codegard_cache.find()

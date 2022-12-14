@@ -1,0 +1,12 @@
+exit
+db.codegard_cache.find()
+use codegard
+show dbs
+exit 
+db.codegard_cache.find()
+use codegard
+db.codegard_cache.find()
+codegard.codegard_cache.find()
+codegard.codegard_cache
+use codegard
+show dbs
