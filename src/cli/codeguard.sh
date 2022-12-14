@@ -19,17 +19,14 @@ then
 
     if [ -z "$requirements_arr" ]
     then
-        # Pass the dependency to the server for vulnerability scan
-        requirements=""
-        NL=$'\n'
-        while read line || [ -n "$line" ]
-        do
-            #TODO: The new line is not yes working.. we need it as a dilimiter between differen dependencies. 
-            requirements+=$(printf %b "$line\n")
-        done < requirements.txt
-        if [ -z "$requirements" ]
-        then
-            echo "The requirements.txt file is empty"
+        echo "The requirements.txt file is empty - no dependencies"
+    else
+        # Pass the requirements to backend for proccessing and echo the results here.
+        jq -n --arg requirements_arr "${requirements_arr[*]}" '{"dependencies": ($requirements_arr / " ") }' > dependencies.json
+        response=$(curl -X POST http://localhost:5000/scan -H 'Content-Type: application/json' -d @dependencies.json | jq .)
+        # TODO: check if the response is validd 200 and if not emptey. emptey means no varnubilities were found
+        if [ $response == "{}" ]; then
+            echoCodeguardResponse "No vulnerabilities found."
         else
             echoCodeguardResponse $response
         fi
