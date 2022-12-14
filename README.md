@@ -4,9 +4,9 @@ This repo holds all the code for Ruppin distributed systems final project.
 
 Usage:
 
-1. Download the codegaurd cli from \*\*\*
-2. Copy the codegaurd file to /usr/local/bin
-3. Make the file executable by running: cd /usr/local/bin && chmod +x codeguard
+1. Clone the codeguard repo
+2. change diractory to src/cli
+3. run the install_cli.sh installation script as admin.(Only Mac-os is supported)
 
 high level architecture:
 ![image](https://user-images.githubusercontent.com/82441934/202120826-42602753-1bea-448e-b46b-06102022dd7b.png)
