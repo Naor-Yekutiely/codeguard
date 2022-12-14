@@ -17,7 +17,7 @@ dependencyExecutor = DependencyExecutor()
 fetchFromSource = dependencyExecutor.fetchFromSource
 
 app.secret_key = "super secret key"
-le = LeaderElection('localhost:2181', 'AppChat', '/election')
+le = LeaderElection('localhost:2181', 'codeguard', '/election')
 le.register()
 signal.signal(signal.SIGINT, handler)
 
