@@ -10,6 +10,7 @@ def call_to_codeguard():
 
 start_time= []
 threads=[]
+counter=1 
 range_num=int(input("please insert the number of threads for oveload the codeguard cli ==>"))
 for i in range(range_num):
     new_thread = Thread(target=call_to_codeguard)
@@ -18,3 +19,9 @@ for i in range(range_num):
 for thread in threads:
     thread.join()
 
+
+for j in start_time: 
+    print("Round {}: {} sec".format(counter,j))
+    counter+=1
+
+print("The test done !!")
