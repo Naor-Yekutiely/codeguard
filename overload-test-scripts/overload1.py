@@ -11,9 +11,10 @@ def call_to_codeguard():
 start_time= []
 threads=[]
 range_num=int(input("please insert the number of threads for oveload the codeguard cli ==>"))
-for i in range(5):
+for i in range(range_num):
     new_thread = Thread(target=call_to_codeguard)
     threads.append(new_thread)
 
 for thread in threads:
     thread.join()
+
