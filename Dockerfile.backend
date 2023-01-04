@@ -1,0 +1,12 @@
+FROM python:3.9 
+# Or any preferred Python version.
+
+WORKDIR /backend
+
+COPY ./src/backEnd /backend
+
+RUN python -m pip install --upgrade pip 
+RUN pip install flask requests kazoo
+
+
+CMD python server.py
