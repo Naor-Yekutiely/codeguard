@@ -6,7 +6,9 @@ Usage:
 
 1. Clone the codeguard repo
 2. change diractory to src/cli
-3. run the install_cli.sh installation script as admin.(Only Mac-os is supported)
+3. run the install_cli.sh installation script as admin.(Only Mac-os/Linux is supported)
+
+**Note: verify you have the right premissions on '/usr/local/bin' for installation.**
 
 high level architecture:
 ![image](https://user-images.githubusercontent.com/82441934/202120826-42602753-1bea-448e-b46b-06102022dd7b.png)
