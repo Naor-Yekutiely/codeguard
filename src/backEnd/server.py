@@ -12,7 +12,7 @@ fetchFromSource = dependencyExecutor.fetchFromSource
 
 
 @app.route('/scan', methods=['POST'])
-def login():
+def scan():
     dependencies = request.get_json()
     vulnerabilities = []
     try:
