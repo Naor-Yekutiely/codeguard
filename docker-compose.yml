@@ -5,7 +5,7 @@ services:
   backend:
     build: 
       context: .
-      dockerfile: Dockerfile.backend
+      dockerfile: src/dockerfiles/Dockerfile.backend
     ports:
       - "5000:5000"
     
