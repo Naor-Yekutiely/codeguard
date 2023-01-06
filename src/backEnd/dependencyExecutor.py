@@ -41,8 +41,8 @@ class DependencyExecutor:
             mongo = MongoDBConnector()
             vulnerabilities = []
             for dependency in dependencies["dependencies"]:
-                # query = { "name": dependency }
-                query = { "name": "requests" }
+                query = { "name": dependency }
+                # query = { "name": "requests" }
                 db = mongo.client.codegard
                 result = db.codegard_cache.find(query)
                 if result.retrieved >> 0: 
