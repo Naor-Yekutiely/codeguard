@@ -1,13 +1,36 @@
 version: '3.7'
 
 services:
-  backend:
-    build: 
-      context: .
-      dockerfile: src/dockerfiles/Dockerfile.backend
+
+  backend1:
+    build: ./src/backEnd
     ports:
-      - "5000:5000"
-    
+       - '5000:5000'
+  backend2:
+    build: ./src/backEnd
+    ports:
+       - '5001:5000'
+  backend3:
+    build: ./src/backEnd
+    ports:
+       - '5002:5000'
+  backend4:
+    build: ./src/backEnd
+    ports:
+       - '5003:5000'  
+   
+  
+  haproxy:
+    build: ./src/LB
+    ports:
+       - '80:80'
+       - '8404:8404'   
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
+      - backend4
+      
   mongo:
     image: mongo
     environment:
@@ -15,21 +38,16 @@ services:
     volumes:
       - ./mongo-data:/data/db
       # - ./src/mongoDB/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js ### -- !!!for initial data!!!!
-    ports:
-      - "27017:27017"
-    depends_on:
-      - backend
-
-  zookeeper:
-    image: zookeeper
-    restart: always
-    hostname: zoo
-    ports:
-      - 2181:2181
-    environment:
-      ZOO_MY_ID: 1
-      ZOO_SERVERS: server.1=zoo:2888:3888;2181
-
-
-# volumes:
+  # volumes:
 #   - ./mongo-data:/ 
+    ports:
+      - '27017:27017'
+    depends_on:
+      - haproxy
+      
+   
+
+
+
+
+

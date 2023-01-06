@@ -2,12 +2,11 @@ from flask import Flask
 from flask import request, Response
 import json
 from dependencyExecutor import DependencyExecutor
-from zooKeeperRegister import ZooKeeperRegisterClient
+
 
 
 app = Flask(__name__)
 dependencyExecutor = DependencyExecutor()
-zooKeeperClient = ZooKeeperRegisterClient(app)
 fetchFromSource = dependencyExecutor.fetchFromSource
 
 
