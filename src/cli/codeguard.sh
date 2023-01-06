@@ -32,5 +32,5 @@ then
         fi
     fi
 else
-    echoCodegourdResponse "This is not a git repository. Please run codeguard within a scope of a git repository"
+    echoCodeguardResponse "This is not a git repository. Please run codeguard within a scope of a git repository"
 fi

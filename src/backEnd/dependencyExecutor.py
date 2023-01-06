@@ -1,7 +1,7 @@
 import serverConfiguration
 import requests
 import json
-
+from mongoDB import MongoDBConnector
 
 class DependencyExecutor:
     def __init__(self):
@@ -36,5 +36,22 @@ class DependencyExecutor:
             raise Exception(
                 f"Failed to fetch vulnerabilities from Nist. err: {error}")
 
-    def fetchVulnerabilitiesFromMongoDB():
-        return 2
+    def fetchVulnerabilitiesFromMongoDB(self, dependencies):
+        try:
+            mongo = MongoDBConnector()
+            vulnerabilities = []
+            for dependency in dependencies["dependencies"]:
+                # query = { "name": dependency }
+                query = { "name": "requests" }
+                db = mongo.client.codegard
+                result = db.codegard_cache.find(query)
+                if result.retrieved >> 0: 
+                    vulnerability = {
+                            "dependency_name": dependency,
+                            "number_of_found_vulnerabilities": 1
+                        }
+                    vulnerabilities.append(vulnerability)
+            return vulnerabilities
+        except Exception as error:
+            raise Exception(
+                f"Failed to fetch vulnerabilities from mongoDB. err: {error}")
