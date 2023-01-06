@@ -5,24 +5,28 @@ services:
     build:
       context: .
       dockerfile: ./src/infra/backend.Dockerfile
+    container_name: backend1
     ports:
       - "5000:5000"
   backend2:
     build:
       context: .
       dockerfile: ./src/infra/backend.Dockerfile
+    container_name: backend2
     ports:
       - "5001:5000"
   backend3:
     build:
       context: .
       dockerfile: ./src/infra/backend.Dockerfile
+    container_name: backend3
     ports:
       - "5002:5000"
   backend4:
     build:
       context: .
       dockerfile: ./src/infra/backend.Dockerfile
+    container_name: backend4
     ports:
       - "5003:5000"
    
@@ -54,7 +58,6 @@ services:
     depends_on:
       - haproxy
       
-   
 
 
 
