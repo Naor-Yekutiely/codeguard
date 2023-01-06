@@ -9,7 +9,7 @@ EXPOSE 5000
 
 
 RUN python -m pip install --upgrade pip 
-RUN pip install flask requests
+RUN pip install flask requests pymongo
 
 
 CMD python server.py
