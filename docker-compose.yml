@@ -1,27 +1,36 @@
 version: '3.7'
 
-services:
-
+services:    
   backend1:
-    build: ./src/backEnd
+    build:
+      context: .
+      dockerfile: ./src/infra/backend.Dockerfile
     ports:
-       - '5000:5000'
+      - "5000:5000"
   backend2:
-    build: ./src/backEnd
+    build:
+      context: .
+      dockerfile: ./src/infra/backend.Dockerfile
     ports:
-       - '5001:5000'
+      - "5001:5000"
   backend3:
-    build: ./src/backEnd
+    build:
+      context: .
+      dockerfile: ./src/infra/backend.Dockerfile
     ports:
-       - '5002:5000'
+      - "5002:5000"
   backend4:
-    build: ./src/backEnd
+    build:
+      context: .
+      dockerfile: ./src/infra/backend.Dockerfile
     ports:
-       - '5003:5000'  
+      - "5003:5000"
    
   
   haproxy:
-    build: ./src/LB
+    build: 
+      context: ./src/infra/
+      dockerfile: haproxy.Dockerfile
     ports:
        - '80:80'
        - '8404:8404'   
@@ -46,7 +55,6 @@ services:
       - haproxy
       
    
-
 
 
 

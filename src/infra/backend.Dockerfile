@@ -3,7 +3,7 @@ FROM python:3.9
 
 WORKDIR /backend
 
-COPY . .
+COPY ./src/backEnd /backend
 
 EXPOSE 5000
 
