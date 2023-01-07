@@ -65,7 +65,7 @@ services:
     hostname: mongo_cfgserv
     container_name: mongo_cfgserv
     image: mongo
-    command: mongod --configsvr --replSet cfgrs
+    command: mongod --configsvr --replSet cfgrs --bind_ip 0.0.0.0 --port 27015
     ports:
       - 27015:27015
 
@@ -87,10 +87,10 @@ services:
     environment:
       MONGO_INITDB_DATABASE: codegard
     ports:
-      - "27016:27017"
+      - "27016:27016"
     volumes:
       - mongodb1:/data/db
-    command: mongod --shardsvr --replSet rs0
+    command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27016 --replSet rs0
     depends_on:
     - mongo_route
     - mongo_cfgserv
@@ -102,10 +102,10 @@ services:
     environment:
       MONGO_INITDB_DATABASE: codegard
     ports:
-      - "27018:27017"
+      - "27018:27018"
     volumes:
       - mongodb2:/data/db
-    command: mongod --shardsvr --replSet rs0 
+    command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27018 --replSet rs0 
     depends_on:
       - mongo_route
       - mongo_cfgserv
@@ -120,7 +120,7 @@ services:
       - "27019:27017"
     volumes:
       - mongodb3:/data/db
-    command: mongod --shardsvr --replSet rs0 
+    command:  mongod --shardsvr --bind_ip 0.0.0.0 --port 27019 --replSet rs0 
     depends_on:
       - mongo_route
       - mongo_cfgserv
@@ -130,7 +130,6 @@ volumes:
   mongodb1: {}
   mongodb2: {}
   mongodb3: {}
-
 
 
 
