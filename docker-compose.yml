@@ -32,6 +32,8 @@ services:
    
   
   haproxy:
+    hostname: haproxy
+    container_name: haproxy
     build: 
       context: ./src/infra/
       dockerfile: haproxy.Dockerfile
@@ -44,17 +46,39 @@ services:
       - backend3
       - backend4
 
-  mongos:
-    hostname: mongos
-    container_name: mongos
+############################################################
+
+## Mongo Configruration
+
+# Cfg Server:
+# mongo_cfgserv: 27015
+
+# Router Server:
+# mongo_route: 27017
+
+# Sharding Cluster:
+# rs0/mongodb1:27016,mongodb1:27018,mongodb1:27019
+
+############################################################
+
+  mongo_cfgserv:
+    hostname: mongo_cfgserv
+    container_name: mongo_cfgserv
     image: mongo
-    command: mongos --configdb shard1rs/mongodb1:27016,mongodb2:27018,mongodb3:27019 --bind_ip 0.0.0.0 --port 27017
+    command: mongod --configsvr --replSet cfgrs
     ports:
-      - 60000:27017
+      - 27015:27015
+
+
+  mongo_route:
+    hostname: mongo_route
+    container_name: mongo_route
+    image: mongo
+    command: mongos --configdb cfgrs/mongo_cfgserv:27015 --bind_ip 0.0.0.0 --port 27017
+    ports:
+      - 27017:27017
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo_cfgserv
 
   mongodb1:
     image: mongo
@@ -65,8 +89,11 @@ services:
     ports:
       - "27016:27017"
     volumes:
-      - ./mongo-data/mongodb1:/data/db
-    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+      - mongodb1:/data/db
+    command: mongod --shardsvr --replSet rs0
+    depends_on:
+    - mongo_route
+    - mongo_cfgserv
 
   mongodb2:
     image: mongo
@@ -77,8 +104,11 @@ services:
     ports:
       - "27018:27017"
     volumes:
-      - ./mongo-data/mongodb2:/data/db
-    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+      - mongodb2:/data/db
+    command: mongod --shardsvr --replSet rs0 
+    depends_on:
+      - mongo_route
+      - mongo_cfgserv
 
   mongodb3:
     image: mongo
@@ -89,25 +119,20 @@ services:
     ports:
       - "27019:27017"
     volumes:
-      - ./mongo-data/mongodb3:/data/db
-    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+      - mongodb3:/data/db
+    command: mongod --shardsvr --replSet rs0 
+    depends_on:
+      - mongo_route
+      - mongo_cfgserv
+  
+
+volumes:
+  mongodb1: {}
+  mongodb2: {}
+  mongodb3: {}
 
 
-   #mongo with no sharding!!!   
-#   mongo:
-#     image: mongo
-#     environment:
-#       MONGO_INITDB_DATABASE: codegard
-#     volumes:
-#       - ./mongo-data/mongodb1:/data/db
-#       # - ./src/mongoDB/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js ### -- !!!for initial data!!!!
-#   # volumes:
-# #   - ./mongo-data:/ 
-#     ports:
-#       - '27017:27017'
-#     depends_on:
-#       - haproxy
-      
+
 
 
 
