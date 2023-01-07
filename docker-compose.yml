@@ -43,20 +43,57 @@ services:
       - backend2
       - backend3
       - backend4
-      
-  mongo:
+
+  mongodb1:
     image: mongo
+    container_name: mongodb1
+    hostname: mongodb1
     environment:
       MONGO_INITDB_DATABASE: codegard
-    volumes:
-      - ./mongo-data:/data/db
-      # - ./src/mongoDB/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js ### -- !!!for initial data!!!!
-  # volumes:
-#   - ./mongo-data:/ 
     ports:
-      - '27017:27017'
-    depends_on:
-      - haproxy
+      - "27017:27017"
+    volumes:
+      - ./mongo-data/mongodb1:/data/db
+    command: mongod --replSet rs0
+
+  mongodb2:
+    image: mongo
+    container_name: mongodb2
+    hostname: mongodb2
+    environment:
+      MONGO_INITDB_DATABASE: codegard
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./mongo-data/mongodb2:/data/db
+    command: mongod --replSet rs0
+
+  mongodb3:
+    image: mongo
+    container_name: mongodb3
+    hostname: mongodb3
+    environment:
+      MONGO_INITDB_DATABASE: codegard
+    ports:
+      - "27019:27017"
+    volumes:
+      - ./mongo-data/mongodb3:/data/db
+    command: mongod --replSet rs0
+
+   #mongo with no sharding!!!   
+#   mongo:
+#     image: mongo
+#     environment:
+#       MONGO_INITDB_DATABASE: codegard
+#     volumes:
+#       - ./mongo-data/mongodb1:/data/db
+#       # - ./src/mongoDB/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js ### -- !!!for initial data!!!!
+#   # volumes:
+# #   - ./mongo-data:/ 
+#     ports:
+#       - '27017:27017'
+#     depends_on:
+#       - haproxy
       
 
 
