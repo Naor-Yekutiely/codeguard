@@ -21,7 +21,7 @@ def scan():
     if (len(vulnerabilities) > 0):
         return Response(json.dumps(vulnerabilities), status=200, mimetype='application/json')
 
-    return Response("{}", status=200, mimetype='application/json')
+    return Response("[]", status=404, mimetype='application/json')
 
 
 app.run()
