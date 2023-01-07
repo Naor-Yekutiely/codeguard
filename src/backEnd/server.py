@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request, Response
 import json
+import sys
 from dependencyExecutor import DependencyExecutor
 
 
@@ -17,11 +18,11 @@ def scan():
     try:
         vulnerabilities = fetchFromSource(dependencies)
     except Exception as err:
-        print(err)
+        print(err, file=sys.stdout)
     if (len(vulnerabilities) > 0):
         return Response(json.dumps(vulnerabilities), status=200, mimetype='application/json')
 
     return Response("[]", status=404, mimetype='application/json')
 
 
-app.run()
+app.run(host="0.0.0.0")
