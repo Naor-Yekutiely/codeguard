@@ -5,7 +5,7 @@ WORKDIR /backend
 
 COPY ./src/backEnd /backend
 
-EXPOSE 5000
+EXPOSE 5000 5001
 
 RUN python -m pip install --upgrade pip 
 RUN python -m pip install flask requests
