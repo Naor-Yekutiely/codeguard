@@ -2,3 +2,4 @@
 2. list all data bases with the command: show dbs
 3. use the codegard database with the command: use codegard
 4. For listing all data form the database collection (The collection name is "codegard_cache") use the command: db.codegard_cache.find()
+5. For start usung sharding use the command from the mogodb1 container : rs.initiate({ _id : "rs0", members: [{ _id: 0, host: "mongodb1:27017" }, { _id: 1, host: "mongodb2:27017" }, { _id: 2, host: "mongodb3:27017" }]})
