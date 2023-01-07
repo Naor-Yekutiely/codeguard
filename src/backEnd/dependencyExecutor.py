@@ -40,7 +40,7 @@ class DependencyExecutor:
     def fetchVulnerabilitiesFromMongoDB(self, dependencies):
         try:
             # mongo = MongoDBConnector()
-            conn_str = 'mongodb://localhost:27017,localhost:27018,localhost:27019'
+            conn_str = 'mongos://localhost:27017'
             client = MongoClient(conn_str, serverSelectionTimeoutMS=5000)
             vulnerabilities = []
             for dependency in dependencies["dependencies"]:
