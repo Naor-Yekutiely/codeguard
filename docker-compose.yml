@@ -79,7 +79,7 @@ services:
       - 27015:27017
     volumes:
       - cfgsvr:/data/db
-
+      - ./mongo-data/mongo-config:/data/db
 
   mongos:
     hostname: mongos
@@ -87,6 +87,8 @@ services:
     image: mongo
     ports:
       - 27017:27017
+    volumes:
+      - ./mongo-data/mongos:/data/db
     command: mongos --configdb cfgrs/mongo_cfgserv:27017 --bind_ip 0.0.0.0 --port 27017
     depends_on:
       - mongodb1
