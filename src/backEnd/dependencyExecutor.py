@@ -39,24 +39,24 @@ class DependencyExecutor:
 
     def fetchVulnerabilitiesFromMongoDB(self, dependencies):
         try:
-            # mongo = MongoDBConnector()
-            conn_str = 'mongos://localhost:27017'
-            client = MongoClient(conn_str, serverSelectionTimeoutMS=5000)
+            client = MongoClient(host='mongos',port=27017)
             vulnerabilities = []
+            results = []
             for dependency in dependencies["dependencies"]:
                 if serverConfiguration.isFakeData: 
                     # In fake data mode we dont look at the dependency version
                     parts = dependency.split("==")
                     dependency = parts[0].lower()
                 query = { "name": dependency }
-                # query = { "name": "requests" }
                 db = client.codegard
                 result = db.codegard_cache.find(query)
+                for r in result:
+                    results.append(r)
                 print(result)
-                if result.retrieved >> 0: 
+                if len(results) > 0: 
                     vulnerability = {
-                            "dependency_name": dependency,
-                            "number_of_found_vulnerabilities": 1
+                        "dependency_name": dependency,
+                        "number_of_found_vulnerabilities": 1
                     }
                     vulnerabilities.append(vulnerability)
             return vulnerabilities

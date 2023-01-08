@@ -4,7 +4,7 @@ from threading import Thread
 
 def call_to_codeguard():
     start_time_op = time.time()
-    os.system("codeguard")
+    os.system("curl -X POST http://localhost:80/test")
     timing_list.append(time.time() - start_time_op)
 
 
@@ -15,6 +15,10 @@ range_num=int(input("please insert the number of threads for oveload the codegua
 for i in range(range_num):
     new_thread = Thread(target=call_to_codeguard)
     threads.append(new_thread)
+
+# start the threads
+for t in threads:
+    t.start()
 
 for thread in threads:
     thread.join()
