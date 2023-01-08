@@ -1,1 +1,0 @@
-sh.addShard("rs0/mongodb1:27017,mongodb2:27017,mongodb3:27017")

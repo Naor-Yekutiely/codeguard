@@ -73,24 +73,24 @@ services:
   mongo_cfgserv:
     hostname: mongo_cfgserv
     container_name: mongo_cfgserv
-    image: mongo
+    build:
+      context: .
+      dockerfile: ./src/infra/mongo.Dockerfile
     command: mongod --configsvr --replSet cfgrs --bind_ip 0.0.0.0 --port 27017 --dbpath /data/db
     ports:
       - 27015:27017
     volumes:
       - cfgsvr:/data/db
-      - ./mongo-data/mongo-config:/data/db
-      - ./src/mongoDB/mongo_config.js:/docker-entrypoint-initdb.d/mongo_config.js
+
 
   mongos:
     hostname: mongos
     container_name: mongos
-    image: mongo
+    build:
+      context: .
+      dockerfile: ./src/infra/mongo.Dockerfile
     ports:
       - 27017:27017
-    volumes:
-      - ./mongo-data/mongos:/data/db
-      - ./src/mongoDB/mongos.js:/docker-entrypoint-initdb.d/mongos.js
     command: mongos --configdb cfgrs/mongo_cfgserv:27017 --bind_ip 0.0.0.0 --port 27017
     depends_on:
       - mongodb1
@@ -99,7 +99,9 @@ services:
       - mongo_cfgserv
 
   mongodb1:
-    image: mongo
+    build:
+      context: .
+      dockerfile: ./src/infra/mongo.Dockerfile
     container_name: mongodb1
     hostname: mongodb1
     environment:
@@ -108,8 +110,6 @@ services:
       - "27016:27017"
     volumes:
       - mongodb1:/data/db
-      - ./mongo-data/mongodb1:/data/db
-      - ./src/mongoDB/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
     depends_on:
       - mongodb2
@@ -127,7 +127,6 @@ services:
       - "27018:27017"
     volumes:
       - mongodb2:/data/db
-      - ./mongo-data/mongodb2:/data/db
     command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0  --dbpath /data/db
  
 
@@ -141,7 +140,6 @@ services:
       - "27019:27017"
     volumes:
       - mongodb3:/data/db
-      - ./mongo-data/mongodb3:/data/db
     command:  mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
   
 
