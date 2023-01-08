@@ -80,6 +80,7 @@ services:
     volumes:
       - cfgsvr:/data/db
       - ./mongo-data/mongo-config:/data/db
+      - ./src/mongoDB/mongo_config.js:/docker-entrypoint-initdb.d/mongo_config.js
 
   mongos:
     hostname: mongos
@@ -89,6 +90,7 @@ services:
       - 27017:27017
     volumes:
       - ./mongo-data/mongos:/data/db
+      - ./src/mongoDB/mongos.js:/docker-entrypoint-initdb.d/mongos.js
     command: mongos --configdb cfgrs/mongo_cfgserv:27017 --bind_ip 0.0.0.0 --port 27017
     depends_on:
       - mongodb1
@@ -107,7 +109,12 @@ services:
     volumes:
       - mongodb1:/data/db
       - ./mongo-data/mongodb1:/data/db
+      - ./src/mongoDB/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
+    depends_on:
+      - mongodb2
+      - mongodb3
+
 
 
   mongodb2:

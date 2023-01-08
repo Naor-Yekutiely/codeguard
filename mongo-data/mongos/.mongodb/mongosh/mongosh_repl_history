@@ -1,3 +1,6 @@
+db.codegard_cache.find()
+use codegard
+db.codegard_cache.find()
 db.codegard_cache.find({ "name": "requests" })
 db.codegard_cache.find(query)
 use codegard
