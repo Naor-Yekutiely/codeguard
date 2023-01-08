@@ -24,5 +24,10 @@ def scan():
 
     return Response("[]", status=404, mimetype='application/json')
 
+@app.route('/test', methods=['POST'])
+def test():
+    return Response("[]", status=200)
+
+
 
 app.run(host="0.0.0.0")
