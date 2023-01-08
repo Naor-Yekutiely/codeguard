@@ -104,6 +104,7 @@ services:
       - "27016:27017"
     volumes:
       - mongodb1:/data/db
+      - ./mongo-data/mongodb1:/data/db
     command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
 
 
@@ -117,6 +118,7 @@ services:
       - "27018:27017"
     volumes:
       - mongodb2:/data/db
+      - ./mongo-data/mongodb2:/data/db
     command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0  --dbpath /data/db
  
 
@@ -130,6 +132,7 @@ services:
       - "27019:27017"
     volumes:
       - mongodb3:/data/db
+      - ./mongo-data/mongodb3:/data/db
     command:  mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
   
 
