@@ -64,14 +64,11 @@ services:
   mongo_cfgserv:
     hostname: mongo_cfgserv
     container_name: mongo_cfgserv
-    # image: mongo
     build:
       context: .
       dockerfile: ./src/infra/mongocfg.Dockerfile
     environment:
       MONGO_INITDB_DATABASE: codegard
-    # entrypoint: mongod --configsvr --replSet cfgrs --bind_ip 0.0.0.0 --port 27017
-    # entrypoint: bash cfg-server.sh
     ports:
       - 27015:27017
     volumes:
@@ -80,7 +77,7 @@ services:
   mongos:
     hostname: mongos
     container_name: mongos
-    # image: mongo
+
     build:
       context: .
       dockerfile: ./src/infra/mongos.Dockerfile
@@ -88,18 +85,12 @@ services:
       - 27017:27017
     environment:
       MONGO_INITDB_DATABASE: codegard
-    # entrypoint: mongos --configdb cfgrs/mongo_cfgserv:27017 --bind_ip 0.0.0.0 --port 27017
-    # entrypoint: bash mongos-server.sh
     depends_on:
       - mongodb1
       - mongodb2
       - mongodb3
       - mongo_cfgserv
-    links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
-      - mongo_cfgserv
+
 
   mongodb1:
     build:
@@ -113,21 +104,18 @@ services:
       - "27016:27017"
     volumes:
       - mongodb1:/data/db
-    # entrypoint: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 
-    # entrypoint: bash init_data.sh
     depends_on:
       - mongodb2
       - mongodb3
-    links:
-      - mongodb2
-      - mongodb3
       - mongo_cfgserv
+
     
           
   mongodb2:
     image: mongo
     container_name: mongodb2
     hostname: mongodb2
+    entrypoint: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 
     environment:
       MONGO_INITDB_DATABASE: codegard
     ports:
@@ -140,6 +128,7 @@ services:
     image: mongo
     container_name: mongodb3
     hostname: mongodb3
+    entrypoint: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 
     environment:
       MONGO_INITDB_DATABASE: codegard
     ports:
