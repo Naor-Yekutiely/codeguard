@@ -59,45 +59,43 @@ services:
 # Sharding Cluster:
 # rs0/mongodb1:27016,mongodb1:27018,mongodb1:27019
 
-# initialize cfg serve [mongosh]:
-# rs.initiate ({ _id: "cfgrs", configsvr: true, members: [ {_id : 0, host : "mongo_cfgserv:27017" }] })
-# rs.status()
-# sharding replica [mongosh]:
-# rs.initiate( { _id: "rs0", members: [ { _id : 0, host : "mongodb1:27017" }, { _id : 1, host : "mongodb2:27017" }, { _id : 2, host : "mongodb3:27017" } ] } )
-# rs.status()
-# initialize mongos server with sharding:
-# sh.addShard("rs0/mongodb1:27017,mongodb2:27017,mongodb3:27017")
-# sh.status()
 ############################################################
 
   mongo_cfgserv:
     hostname: mongo_cfgserv
     container_name: mongo_cfgserv
-    image: mongo
-    command: mongod --configsvr --replSet cfgrs --bind_ip 0.0.0.0 --port 27017 --dbpath /data/db
+    build:
+      context: .
+      dockerfile: ./src/infra/mongocfg.Dockerfile
+    environment:
+      MONGO_INITDB_DATABASE: codegard
     ports:
       - 27015:27017
     volumes:
       - cfgsvr:/data/db
-      - ./mongo-data/mongo-config:/data/db
 
   mongos:
     hostname: mongos
     container_name: mongos
-    image: mongo
+
+    build:
+      context: .
+      dockerfile: ./src/infra/mongos.Dockerfile
     ports:
       - 27017:27017
-    volumes:
-      - ./mongo-data/mongos:/data/db
-    command: mongos --configdb cfgrs/mongo_cfgserv:27017 --bind_ip 0.0.0.0 --port 27017
+    environment:
+      MONGO_INITDB_DATABASE: codegard
     depends_on:
       - mongodb1
       - mongodb2
       - mongodb3
       - mongo_cfgserv
 
+
   mongodb1:
-    image: mongo
+    build:
+      context: .
+      dockerfile: ./src/infra/mongo.Dockerfile
     container_name: mongodb1
     hostname: mongodb1
     environment:
@@ -106,36 +104,38 @@ services:
       - "27016:27017"
     volumes:
       - mongodb1:/data/db
-      - ./mongo-data/mongodb1:/data/db
-    command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
+    depends_on:
+      - mongodb2
+      - mongodb3
+      - mongo_cfgserv
 
-
+    
+          
   mongodb2:
     image: mongo
     container_name: mongodb2
     hostname: mongodb2
+    entrypoint: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 
     environment:
       MONGO_INITDB_DATABASE: codegard
     ports:
       - "27018:27017"
     volumes:
       - mongodb2:/data/db
-      - ./mongo-data/mongodb2:/data/db
-    command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0  --dbpath /data/db
  
 
   mongodb3:
     image: mongo
     container_name: mongodb3
     hostname: mongodb3
+    entrypoint: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 
     environment:
       MONGO_INITDB_DATABASE: codegard
     ports:
       - "27019:27017"
     volumes:
       - mongodb3:/data/db
-      - ./mongo-data/mongodb3:/data/db
-    command:  mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
+
   
 
 volumes:
