@@ -10,5 +10,5 @@ RUN chmod +x /tmp/bash-scripts/mongos.sh
 
 WORKDIR /tmp/bash-scripts/
 ENTRYPOINT mongos --configdb cfgrs/mongo_cfgserv:27017 --bind_ip 0.0.0.0 --port 27017
-# RUN bash mongos.sh
+# CMD [ "bash", "mongos.sh" ]
 

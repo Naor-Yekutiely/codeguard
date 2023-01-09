@@ -8,5 +8,5 @@ RUN chmod +x /tmp/bash-scripts/config.sh
 
 WORKDIR /tmp/bash-scripts/
 ENTRYPOINT mongod --configsvr --replSet cfgrs --bind_ip 0.0.0.0 --port 27017
-# RUN bash config.sh
+# CMD [ "bash", "config.sh" ]
 
