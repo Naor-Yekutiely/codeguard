@@ -4,7 +4,7 @@ usage() {
     echo "Usage: $0 [-s <package>] [-u] [-h]" 1>&2; exit 1; 
 }
 echoVersion() {
-    echo "1.0.2"
+    echo "1.0.3"
 }
 help() {
     echo '''
@@ -50,6 +50,8 @@ while getopts ":s:uhv" o; do
             ;;
         u)
         # Update CLI to latest release version
+            # Save working directory
+            wd=$(pwd)
             # Get the latest release version tag
             latest_tag=$(curl -s https://api.github.com/repos/Naor-Yekutiely/codeguard/releases/latest | sed -Ene '/^ *"tag_name": *"(v.+)",$/s//\1/p')
             echo "Installing codeguard CLI version: $latest_tag"
@@ -62,7 +64,7 @@ while getopts ":s:uhv" o; do
             # Install
             source ./install_cli.sh
             # Clean up
-            cd - > /dev/null
+            cd $wd
             rm -rf "codeguard-$latest_tag_num.tar.gz"
             rm -rf "codeguard-$latest_tag_num"
             ;;
