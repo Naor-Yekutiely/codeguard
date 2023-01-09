@@ -4,7 +4,7 @@ usage() {
     echo "Usage: $0 [-s <package>] [-u] [-h]" 1>&2; exit 1; 
 }
 echoVersion() {
-    echo "1.0.1"
+    echo "1.0.2"
 }
 help() {
     echo '''
