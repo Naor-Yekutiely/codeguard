@@ -86,20 +86,6 @@ if [ $OPTIND -eq 1 ]; then
     # Repo scan
     if [ -d .git ]
     then
-<<<<<<< Updated upstream
-        echo "The requirements.txt file is empty - no dependencies"
-    else
-        # Pass the requirements to backend for proccessing and echo the results here.
-        jq -n --arg requirements_arr "${requirements_arr[*]}" '{"dependencies": ($requirements_arr / " ") }' > dependencies.json
-        response=$(curl -X POST http://localhost:80/scan -H 'Content-Type: application/json' -d @dependencies.json | jq .)
-        # response=$(curl -X POST localhost:5000/scan -H 'Content-Type: application/json' -d @dependencies.json | jq .) ### Without LB
-        if [[ "$response" = "[]" ]]; then
-            echoCodeguardResponse "No vulnerabilities found."
-        else
-            echo "-------------------------------------------- codeguard --------------------------------------------"
-            echo $response
-            echo "-------------------------------------------- codeguard --------------------------------------------"
-=======
         pipreqs --force >nul 2>nul
         # Pass the dependency to the server for vulnerability scan
         requirements_arr=();
@@ -119,7 +105,6 @@ if [ $OPTIND -eq 1 ]; then
             else
                 codeguardResponse $response
             fi
->>>>>>> Stashed changes
         fi
     else
         codeguardResponse "This is not a git repository. Please run codeguard within a scope of a git repository"
