@@ -1,5 +1,8 @@
 FROM mongo
 
+COPY ./src/mongoDB/ /
 
-COPY ./src/mongoDB /
+
+
+
 

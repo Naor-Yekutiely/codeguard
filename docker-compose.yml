@@ -59,15 +59,6 @@ services:
 # Sharding Cluster:
 # rs0/mongodb1:27016,mongodb1:27018,mongodb1:27019
 
-# initialize cfg serve [mongosh]:
-# rs.initiate ({ _id: "cfgrs", configsvr: true, members: [ {_id : 0, host : "mongo_cfgserv:27017" }] })
-# rs.status()
-# sharding replica [mongosh]:
-# rs.initiate( { _id: "rs0", members: [ { _id : 0, host : "mongodb1:27017" }, { _id : 1, host : "mongodb2:27017" }, { _id : 2, host : "mongodb3:27017" } ] } )
-# rs.status()
-# initialize mongos server with sharding:
-# sh.addShard("rs0/mongodb1:27017,mongodb2:27017,mongodb3:27017")
-# sh.status()
 ############################################################
 
   mongo_cfgserv:
@@ -76,12 +67,13 @@ services:
     build:
       context: .
       dockerfile: ./src/infra/mongo.Dockerfile
-    command: mongod --configsvr --replSet cfgrs --bind_ip 0.0.0.0 --port 27017 --dbpath /data/db
+    environment:
+      MONGO_INITDB_DATABASE: codegard
+    entrypoint: mongod --configsvr --replSet cfgrs --bind_ip 0.0.0.0 --port 27017 
     ports:
       - 27015:27017
     volumes:
       - cfgsvr:/data/db
-
 
   mongos:
     hostname: mongos
@@ -91,7 +83,9 @@ services:
       dockerfile: ./src/infra/mongo.Dockerfile
     ports:
       - 27017:27017
-    command: mongos --configdb cfgrs/mongo_cfgserv:27017 --bind_ip 0.0.0.0 --port 27017
+    environment:
+      MONGO_INITDB_DATABASE: codegard
+    entrypoint: mongos --configdb cfgrs/mongo_cfgserv:27017 --bind_ip 0.0.0.0 --port 27017
     depends_on:
       - mongodb1
       - mongodb2
@@ -110,13 +104,12 @@ services:
       - "27016:27017"
     volumes:
       - mongodb1:/data/db
-    command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
+    entrypoint: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 
     depends_on:
       - mongodb2
       - mongodb3
-
-
-
+    
+          
   mongodb2:
     image: mongo
     container_name: mongodb2
@@ -127,7 +120,6 @@ services:
       - "27018:27017"
     volumes:
       - mongodb2:/data/db
-    command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0  --dbpath /data/db
  
 
   mongodb3:
@@ -140,7 +132,7 @@ services:
       - "27019:27017"
     volumes:
       - mongodb3:/data/db
-    command:  mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
+
   
 
 volumes:
