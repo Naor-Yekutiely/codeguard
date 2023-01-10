@@ -45,7 +45,10 @@ while getopts ":s:uhv" o; do
             if [[ "$response" = "[]" ]]; then
                 codeguardResponse "No vulnerabilities found for $s"
             else
-                codeguardResponse $response
+                # TODO: use codeguardResponse function
+                echo "-------------------------------------------- codeguard --------------------------------------------"
+                echo $response
+                echo "-------------------------------------------- codeguard --------------------------------------------"
             fi
             ;;
         u)
@@ -105,6 +108,7 @@ if [ $OPTIND -eq 1 ]; then
             if [[ "$response" = "[]" ]]; then
                 codeguardResponse "No vulnerabilities found."
             else
+                # TODO: use codeguardResponse function
                 echo "-------------------------------------------- codeguard --------------------------------------------"
                 echo $response
                 echo "-------------------------------------------- codeguard --------------------------------------------"

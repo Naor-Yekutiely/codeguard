@@ -84,7 +84,7 @@ services:
       - 27015:27017
     volumes:
       - cfgsvr:/data/db
-      - ./mongo-data/mongo-config:/data/db
+      - .Docker_Volumes/mongo-data/mongo-config:/data/db
 
   mongos:
     build:
@@ -117,7 +117,7 @@ services:
       - "27016:27017"
     volumes:
       - mongodb1:/data/db
-      - ./mongo-data/mongodb1:/data/db
+      - .Docker_Volumes/mongo-data/mongodb1:/data/db
     depends_on:
       - mongodb2
       - mongodb3
@@ -136,7 +136,7 @@ services:
       - "27018:27017"
     volumes:
       - mongodb2:/data/db
-      - ./mongo-data/mongodb2:/data/db
+      - .Docker_Volumes/mongo-data/mongodb2:/data/db
  
 
   mongodb3:
@@ -150,7 +150,7 @@ services:
       - "27019:27017"
     volumes:
       - mongodb3:/data/db
-      - ./mongo-data/mongodb3:/data/db
+      - .Docker_Volumes/mongo-data/mongodb3:/data/db
 
   
 
