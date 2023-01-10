@@ -7,6 +7,6 @@ COPY ./src/mongoDB/bash-scripts/config.sh /tmp/bash-scripts/config.sh
 RUN chmod +x /tmp/bash-scripts/config.sh
 
 WORKDIR /tmp/bash-scripts/
-CMD mongod --configsvr --replSet cfgrs --bind_ip 0.0.0.0 --port 27017
+# CMD mongod --configsvr --replSet cfgrs --bind_ip 0.0.0.0 --port 27017
 # CMD [ "bash", "config.sh" ]
 
