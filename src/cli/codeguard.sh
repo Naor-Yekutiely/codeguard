@@ -105,7 +105,9 @@ if [ $OPTIND -eq 1 ]; then
             if [[ "$response" = "[]" ]]; then
                 codeguardResponse "No vulnerabilities found."
             else
-                codeguardResponse $response
+                echo "-------------------------------------------- codeguard --------------------------------------------"
+                echo $response
+                echo "-------------------------------------------- codeguard --------------------------------------------"
             fi
         fi
     else
