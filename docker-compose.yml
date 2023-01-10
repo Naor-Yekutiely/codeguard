@@ -72,11 +72,11 @@ services:
 ############################################################
 
   mongo_cfgserv:
-    hostname: mongo_cfgserv
-    container_name: mongo_cfgserv
     build:
       context: .
       dockerfile: ./src/infra/mongocfg.Dockerfile
+    hostname: mongo_cfgserv
+    container_name: mongo_cfgserv
     command: mongod --configsvr --replSet cfgrs --bind_ip 0.0.0.0 --port 27017 --dbpath /data/db
     environment:
       MONGO_INITDB_DATABASE: codegard
@@ -87,12 +87,11 @@ services:
       - ./mongo-data/mongo-config:/data/db
 
   mongos:
-    hostname: mongos
-    container_name: mongos
-
     build:
       context: .
       dockerfile: ./src/infra/mongos.Dockerfile
+    hostname: mongos
+    container_name: mongos
     ports:
       - 27017:27017
     environment:
