@@ -60,7 +60,6 @@ services:
     volumes:
       - cfgsvr:/data/db
       - ./src/mongoDB/mongo-data/mongo-config:/data/db
-      - ./src/mongoDB/mongo_config.js:/docker-entrypoint-initdb.d/mongo_config.js
 
   mongos:
     build:
