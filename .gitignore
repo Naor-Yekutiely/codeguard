@@ -1,7 +1,3 @@
 */__pycache__/
 .DS_Store
-<<<<<<< HEAD
 src/mongoDB/mongo-data/*
-=======
-Docker_Volumes/*
->>>>>>> origin/main
