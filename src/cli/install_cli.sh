@@ -5,5 +5,3 @@ cd /usr/local/bin
 rm -f codeguard
 mv ./codeguard.sh codeguard
 chmod +x codeguard
-
-

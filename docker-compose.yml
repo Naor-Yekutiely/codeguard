@@ -46,6 +46,8 @@ services:
       - backend3
       - backend4
 
+<<<<<<< HEAD
+=======
 ############################################################
 
 ## Mongo Configruration
@@ -71,6 +73,7 @@ services:
 
 ############################################################
 
+>>>>>>> origin/main
   mongo_cfgserv:
     build:
       context: .
@@ -84,7 +87,12 @@ services:
       - 27015:27017
     volumes:
       - cfgsvr:/data/db
+<<<<<<< HEAD
+      - ./src/mongoDB/mongo-data/mongo-config:/data/db
+      - ./src/mongoDB/mongo_config.js:/docker-entrypoint-initdb.d/mongo_config.js
+=======
       - .Docker_Volumes/mongo-data/mongo-config:/data/db
+>>>>>>> origin/main
 
   mongos:
     build:
@@ -94,8 +102,14 @@ services:
     container_name: mongos
     ports:
       - 27017:27017
+<<<<<<< HEAD
+    volumes:
+      - ./src/mongoDB/mongo-data/mongos:/data/db
+      - ./src/mongoDB/mongos.js:/docker-entrypoint-initdb.d/mongos.js
+=======
     environment:
       MONGO_INITDB_DATABASE: codegard
+>>>>>>> origin/main
     command: mongos --configdb cfgrs/mongo_cfgserv:27017 --bind_ip 0.0.0.0 --port 27017
     depends_on:
       - mongodb1
@@ -117,7 +131,13 @@ services:
       - "27016:27017"
     volumes:
       - mongodb1:/data/db
+<<<<<<< HEAD
+      - ./src/mongoDB/mongo-data/mongodb1:/data/db
+      - ./src/mongoDB/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
+=======
       - .Docker_Volumes/mongo-data/mongodb1:/data/db
+>>>>>>> origin/main
     depends_on:
       - mongodb2
       - mongodb3
@@ -136,7 +156,12 @@ services:
       - "27018:27017"
     volumes:
       - mongodb2:/data/db
+<<<<<<< HEAD
+      - ./src/mongoDB/mongo-data/mongodb2:/data/db
+    command: mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0  --dbpath /data/db
+=======
       - .Docker_Volumes/mongo-data/mongodb2:/data/db
+>>>>>>> origin/main
  
 
   mongodb3:
@@ -150,8 +175,13 @@ services:
       - "27019:27017"
     volumes:
       - mongodb3:/data/db
+<<<<<<< HEAD
+      - ./src/mongoDB/mongo-data/mongodb3:/data/db
+    command:  mongod --shardsvr --bind_ip 0.0.0.0 --port 27017 --replSet rs0 --dbpath /data/db
+=======
       - .Docker_Volumes/mongo-data/mongodb3:/data/db
 
+>>>>>>> origin/main
   
 
 volumes:
