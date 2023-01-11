@@ -7,6 +7,9 @@ Usage:
 1. Clone the codeguard repo
 2. change diractory to src/cli
 3. run the install_cli.sh installation script as admin.(Only Mac-os/Linux is supported)
+4. change to the repo main directory (cd ../.. from /cli)
+5. run the docker compose (docker compose up -d)
+6. scan using the cli command (codeguard)
 
 **Note: verify you have the right premissions on '/usr/local/bin' for installation.**
 
