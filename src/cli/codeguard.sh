@@ -9,10 +9,6 @@ echoVersion() {
 help() {
     echo '''
     Usage: codeguard [-s <package>] [-u] [-h]
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
     codeguard                   Full Git repository scan
     codeguard -s <package>      Specific package scan
     codeguard -u                Update CLI to latest release
@@ -120,8 +116,5 @@ if [ $OPTIND -eq 1 ]; then
     else
         codeguardResponse "This is not a git repository. Please run codeguard within a scope of a git repository"
     fi
-<<<<<<< HEAD
  fi
-=======
- fi
->>>>>>> origin/main
+ 
