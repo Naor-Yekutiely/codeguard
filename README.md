@@ -23,5 +23,11 @@ This repo holds all the code for Ruppin distributed systems final project.
 
 ## High level architecture:
 
-
 ![codeguard_architecture drawio](https://user-images.githubusercontent.com/82441934/212345554-3bbc447b-aba6-43d0-97dc-394be4f5eda2.png)
+
+## Load tests:
+### CLI - Flask tests
+![Screen Shot 2023-01-13 at 16 46 07](https://user-images.githubusercontent.com/82441934/212347910-ce986685-27a0-4adc-996c-18a96cfea301.png)
+### Flask - MongoDB tests
+![Screen Shot 2023-01-13 at 16 50 39](https://user-images.githubusercontent.com/82441934/212348908-71b210d0-336f-46be-9a98-cb4ba36f4243.png)
+
