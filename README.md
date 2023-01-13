@@ -2,28 +2,25 @@
 
 This repo holds all the code for Ruppin distributed systems final project.
 
-Usage:
+## System requirements
 
-1. Clone the codeguard repo
-2. change diractory to src/cli
-3. run the install_cli.sh installation script as admin.(Only Mac-os/Linux is supported)
-4. change to the repo main directory (cd ../.. from /cli)
-5. run the docker compose (docker compose up -d)
-6. scan using the cli command (codeguard)
+1. Unix-like operating system. Example: MacOs, Linux.
+2. Docker & Docker compose. [Link](https://www.docker.com/)
+3. Git. [Link](https://git-scm.com/)
+4. jq. [Link](https://stedolan.github.io/jq/)
+5. pipreqs. [Link](https://pypi.org/project/pipreqs/)
 
-**Note: verify you have the right premissions on '/usr/local/bin' for installation.**
+## Usage:
 
-high level architecture:
+1. Clone the codeguard repo.
+2. Change directory to src/cli. (cd src/cli)
+3. Run the install_cli.sh installation script as admin. (sudo ./install_cli.sh)
+4. Change to the repo main directory. (cd ../.. from /cli)
+5. Run the docker compose file. (docker compose up -d)
+6. Scan for vulnerabilitiesusing using the codeguard CLI. (use codeguard -h for CLI usage instructions)
+
+**Note: For step 3: verify you have the right premissions on '/usr/local/bin' for installation.**
+
+## High level architecture:
+
 ![image](https://user-images.githubusercontent.com/82441934/202120826-42602753-1bea-448e-b46b-06102022dd7b.png)
-
-Codeguard backend open discussions:
-
-1. Kafka will be used between CLI requests to Codeguard backend.
-2. MongoDB will be used as cache between codeguard backend to the open source DB.
-
-Open issues:
-
-1. Find a public API for dependencies vulnerabilities check -> Found: https://nvd.nist.gov/developers/ Use https://pypi.org/project/nvdlib/
-
-Get vulnerabilities list from nist:
-curl -X GET https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=python > vulnerabilities.json
