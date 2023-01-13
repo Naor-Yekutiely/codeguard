@@ -1,8 +1,9 @@
 import serverConfiguration
 import requests
 import json
-# from mongoDB import MongoDBConnector
+import sys
 from pymongo import MongoClient
+
 
 class DependencyExecutor:
     def __init__(self):
@@ -31,34 +32,49 @@ class DependencyExecutor:
                         vulnerabilities.append(vulnerability)
                 else:
                     print(
-                        f'Get Request with parameter Failed with status code {response.status_code}')
+                        f'Get Request with parameter Failed with status code {response.status_code}', file=sys.stdout)
             return vulnerabilities
         except Exception as error:
-            raise Exception(
-                f"Failed to fetch vulnerabilities from Nist. err: {error}")
+            if serverConfiguration.fetchVulnerabilitiesFromNist:
+                raise Exception(
+                    f"Failed to fetch vulnerabilities from Nist. err: {error}")
+            else:
+                print(
+                    f'Fallback to Nist failed with: {error}', file=sys.stdout)
 
     def fetchVulnerabilitiesFromMongoDB(self, dependencies):
         try:
-            client = MongoClient(host='mongos',port=27017)
+            client = MongoClient(host='mongos', port=27017)
             vulnerabilities = []
             results = []
             for dependency in dependencies["dependencies"]:
-                if serverConfiguration.isFakeData: 
+                if serverConfiguration.isFakeData:
                     # In fake data mode we dont look at the dependency version
                     parts = dependency.split("==")
                     dependency = parts[0].lower()
-                query = { "name": dependency }
+                query = {"name": dependency}
                 db = client.codegard
                 result = db.codegard_cache.find(query)
                 for r in result:
                     results.append(r)
                 print(result)
-                if len(results) > 0: 
+                if len(results) > 0:
                     vulnerability = {
                         "dependency_name": dependency,
-                        "number_of_found_vulnerabilities": 1
+                        "number_of_found_vulnerabilities": 1,
+                        "source": "mongoDB"
                     }
                     vulnerabilities.append(vulnerability)
+                elif serverConfiguration.fallBackToNist:
+                    nistResult = self.fetchVulnerabilitiesFromNist(
+                        {'dependencies': [dependency]})
+                    if len(nistResult) > 0:
+                        vulnerability = {
+                            "dependency_name": dependency,
+                            "number_of_found_vulnerabilities": nistResult[0]['number_of_found_vulnerabilities'],
+                            "source": "Nist"
+                        }
+                        vulnerabilities.append(vulnerability)
             return vulnerabilities
         except Exception as error:
             raise Exception(
