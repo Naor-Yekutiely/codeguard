@@ -23,4 +23,5 @@ This repo holds all the code for Ruppin distributed systems final project.
 
 ## High level architecture:
 
-![image](https://user-images.githubusercontent.com/82441934/202120826-42602753-1bea-448e-b46b-06102022dd7b.png)
+
+![codeguard_architecture drawio](https://user-images.githubusercontent.com/82441934/212345554-3bbc447b-aba6-43d0-97dc-394be4f5eda2.png)
