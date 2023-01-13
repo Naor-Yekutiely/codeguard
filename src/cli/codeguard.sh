@@ -17,9 +17,14 @@ help() {
     '''
 }
 echoCodeguardResponse() {
-    echo "-------------------------------------------- codeguard --------------------------------------------"
+    echo -e "\n-------------------------------------------- codeguard --------------------------------------------\n"
     echo "$1"
-    echo "-------------------------------------------- codeguard --------------------------------------------"
+    echo -e "\n-------------------------------------------- codeguard --------------------------------------------\n"
+}
+echoCodeguardJsonResponse() {
+    echo -e "\n-------------------------------------------- codeguard --------------------------------------------\n"
+    jq -n "$response"
+    echo -e "\n-------------------------------------------- codeguard --------------------------------------------\n"
 }
 executeScanRequest() {
     dependencies=("$@")
@@ -44,7 +49,7 @@ while getopts ":s:uhv" o; do
             if [[ "$response" = "[]" ]]; then
                 echoCodeguardResponse "No vulnerabilities found for $s"
             else
-                echoCodeguardResponse "$response"
+                echoCodeguardJsonResponse "$response"
             fi
             ;;
         u)
@@ -104,7 +109,7 @@ if [ $OPTIND -eq 1 ]; then
             if [[ "$response" = "[]" ]]; then
                 echoCodeguardResponse "No vulnerabilities found."
             else
-                echoCodeguardResponse "$response"
+                echoCodeguardJsonResponse "$response"
             fi
         fi
     else
