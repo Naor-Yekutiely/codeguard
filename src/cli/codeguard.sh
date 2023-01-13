@@ -16,15 +16,15 @@ help() {
     codeguard -v                Get installed CLI version
     '''
 }
-codeguardResponse() {
+echoCodeguardResponse() {
     echo "-------------------------------------------- codeguard --------------------------------------------"
-    echo $1
+    echo "$1"
     echo "-------------------------------------------- codeguard --------------------------------------------"
 }
 executeScanRequest() {
     dependencies=("$@")
     if [ -z $dependencies ]; then
-        codeguardResponse "Internal server error occured"
+        echoCodeguardResponse "Internal server error occured"
     fi
 
     jq -n --arg dependencies "${dependencies[*]}" '{"dependencies": ($dependencies / " ") }' > dep.json
@@ -42,12 +42,9 @@ while getopts ":s:uhv" o; do
             response=$(executeScanRequest $s)
 
             if [[ "$response" = "[]" ]]; then
-                codeguardResponse "No vulnerabilities found for $s"
+                echoCodeguardResponse "No vulnerabilities found for $s"
             else
-                # TODO: use codeguardResponse function
-                echo "-------------------------------------------- codeguard --------------------------------------------"
-                echo $response
-                echo "-------------------------------------------- codeguard --------------------------------------------"
+                echoCodeguardResponse "$response"
             fi
             ;;
         u)
@@ -100,21 +97,18 @@ if [ $OPTIND -eq 1 ]; then
 
         if [ -z "$requirements_arr" ]
         then
-            codeguardResponse "The requirements.txt file is empty - no dependencies"
+            echoCodeguardResponse "The requirements.txt file is empty - no dependencies"
         else
             response=$(executeScanRequest "${requirements_arr[@]}")
 
             if [[ "$response" = "[]" ]]; then
-                codeguardResponse "No vulnerabilities found."
+                echoCodeguardResponse "No vulnerabilities found."
             else
-                # TODO: use codeguardResponse function
-                echo "-------------------------------------------- codeguard --------------------------------------------"
-                echo $response
-                echo "-------------------------------------------- codeguard --------------------------------------------"
+                echoCodeguardResponse "$response"
             fi
         fi
     else
-        codeguardResponse "This is not a git repository. Please run codeguard within a scope of a git repository"
+        echoCodeguardResponse "This is not a git repository. Please run codeguard within a scope of a git repository"
     fi
  fi
  
